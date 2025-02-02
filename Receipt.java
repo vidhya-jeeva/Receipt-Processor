@@ -47,26 +47,25 @@ public class ReceiptProcessorApplication {
     private int calculatePoints(Receipt receipt) {
         int points = 0;
         
-        // 1. One point per alphanumeric character in the retailer name
+       
         points += receipt.getRetailer().replaceAll("[^a-zA-Z0-9]", "").length();
 
-        // 2. Using BigDecimal for accurate currency calculations
         BigDecimal total = new BigDecimal(receipt.getTotal());
 
-        // 3. 50 points if the total is a whole number
+     
         if (total.scale() == 0) {
             points += 50;
         }
 
-        // 4. 25 points if the total is a multiple of 0.25
+        
         if (total.remainder(BigDecimal.valueOf(0.25)).compareTo(BigDecimal.ZERO) == 0) {
             points += 25;
         }
 
-        // 5. 5 points for every two items
+       
         points += (receipt.getItems().size() / 2) * 5;
 
-        // 6. Item description bonus (20% of item price if description length is a multiple of 3)
+        
         for (ReceiptItem item : receipt.getItems()) {
             String trimmedDesc = item.getShortDescription().trim();
             if (trimmedDesc.length() % 3 == 0) {
@@ -75,13 +74,13 @@ public class ReceiptProcessorApplication {
             }
         }
 
-        // 7. 6 points if the purchase day is odd
+        
         int day = LocalDate.parse(receipt.getPurchaseDate()).getDayOfMonth();
         if (day % 2 == 1) {
             points += 6;
         }
 
-        // 8. 10 points if the purchase time is between 2:00 PM and 4:00 PM
+        
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime time = LocalTime.parse(receipt.getPurchaseTime(), timeFormatter);
         if (time.isAfter(LocalTime.of(14, 0)) && time.isBefore(LocalTime.of(16, 0))) {
@@ -96,14 +95,12 @@ public class ReceiptProcessorApplication {
             throw new IllegalArgumentException("Retailer name is required");
         }
 
-        // Validate date format and ensure it's a real date
         try {
             LocalDate.parse(receipt.getPurchaseDate(), DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid purchase date format. Expected YYYY-MM-DD");
         }
 
-        // Validate time format using DateTimeFormatter
         try {
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
             LocalTime.parse(receipt.getPurchaseTime(), timeFormatter);
