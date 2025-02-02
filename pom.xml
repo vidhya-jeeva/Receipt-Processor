@@ -45,7 +45,6 @@
 
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin for running the app -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
