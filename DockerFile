@@ -1,0 +1,9 @@
+FROM openjdk:17-jdk-slim 
+
+WORKDIR /app 
+
+COPY target/receipt-processor.jar receipt-processor.jar  
+
+EXPOSE 8080  
+
+CMD ["java", "-jar", "receipt-processor.jar"] 
