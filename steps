@@ -1,0 +1,12 @@
+Steps to run the docker file - 
+
+Build the JAR File -
+
+mvn clean package - (This will generate - target/receipt-processor.jar)
+
+Check JAR file exists by running - 
+ls target/receipt-processor.jar
+
+How to Build & Run the Docker Image
+Build the Docker Image - docker build -t receipt-processor 
+Run the Container - docker run -p 8080:8080 receipt-processor
