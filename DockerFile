@@ -1,9 +1,11 @@
-FROM openjdk:17-jdk-slim 
 
-WORKDIR /app 
+FROM maven:3.8.5-openjdk-17 AS build
+WORKDIR /app
+COPY 
+RUN mvn clean package
 
-COPY target/receipt-processor.jar receipt-processor.jar  
-
-EXPOSE 8080  
-
-CMD ["java", "-jar", "receipt-processor.jar"] 
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/receipt-processor.jar receipt-processor.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "receipt-processor.jar"]
